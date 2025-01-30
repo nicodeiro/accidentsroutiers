@@ -1,5 +1,4 @@
 # AccidentsRoutiers
-![Accident Image](pngtree-car-knock-down-cyclist-png-image_6349870.png)
 # 🚗 Prédiction et Analyse des Accidents de la Route
 
 ## 📌 Description du Projet
