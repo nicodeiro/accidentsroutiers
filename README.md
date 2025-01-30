@@ -48,8 +48,3 @@ python main.py
 - **Python (Pandas, NumPy, Matplotlib, Seaborn, Scikit-Learn)**
 - **Jupyter Notebook** pour l'analyse exploratoire
 - **Git & GitHub** pour le suivi du projet
-
-## 📬 Contact
-Si vous avez des questions ou suggestions, n'hésitez pas à ouvrir une issue sur le repo GitHub ou à nous contacter.
-
-🎯 **Améliorations futures** : Intégration d'API open data et
