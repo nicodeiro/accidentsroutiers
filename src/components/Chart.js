@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Bar, Line, Pie } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, LineElement, PointElement, ArcElement, Title, Tooltip, Legend } from "chart.js";
 
@@ -7,10 +8,12 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointEleme
 const ChartComponent = ({ data }) => {
     // 📌 Nombre d'accidents par jour de la semaine
     const dayCounts = data.reduce((acc, accident) => {
+        if (!accident || !accident.Day_of_Week) return acc; 
         const day = accident.Day_of_Week;
         acc[day] = (acc[day] || 0) + 1;
         return acc;
     }, {});
+    
 
     const labelsDays = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
     const valuesDays = labelsDays.map((_, index) => dayCounts[index + 1] || 0);
@@ -30,10 +33,12 @@ const ChartComponent = ({ data }) => {
 
     // 📌 Nombre d'accidents par tranche horaire
     const hourCounts = data.reduce((acc, accident) => {
+        if (!accident || !accident.Time) return acc; // Vérifie si accident ou accident.Time est null
         const hour = parseInt(accident.Time.split(":")[0], 10);
         acc[hour] = (acc[hour] || 0) + 1;
         return acc;
     }, {});
+    
 
     const labelsHours = Array.from({ length: 24 }, (_, i) => `${i}h`);
     const valuesHours = labelsHours.map((_, index) => hourCounts[index] || 0);
@@ -54,10 +59,12 @@ const ChartComponent = ({ data }) => {
 
     // 📌 Répartition des accidents par gravité
     const severityCounts = data.reduce((acc, accident) => {
+        if (!accident || !accident.Accident_Severity) return acc;
         const severity = accident.Accident_Severity;
         acc[severity] = (acc[severity] || 0) + 1;
         return acc;
     }, {});
+    
 
     const labelsSeverity = ["Léger", "Grave", "Fatal"];
     const valuesSeverity = [severityCounts[1] || 0, severityCounts[2] || 0, severityCounts[3] || 0];
@@ -77,10 +84,12 @@ const ChartComponent = ({ data }) => {
 
     // 📌 Accidents en fonction de la limite de vitesse
     const speedLimitCounts = data.reduce((acc, accident) => {
+        if (!accident || !accident.Speed_limit) return acc;
         const speed = accident.Speed_limit;
         acc[speed] = (acc[speed] || 0) + 1;
         return acc;
     }, {});
+    
 
     const labelsSpeed = Object.keys(speedLimitCounts).sort((a, b) => a - b).map(limit => `${limit} km/h`);
     const valuesSpeed = labelsSpeed.map(limit => speedLimitCounts[parseInt(limit)] || 0);
@@ -100,10 +109,12 @@ const ChartComponent = ({ data }) => {
 
     // 📌 Répartition des accidents entre zones urbaines et rurales
     const areaCounts = data.reduce((acc, accident) => {
+        if (!accident || !accident.Urban_or_Rural_Area) return acc;
         const area = accident.Urban_or_Rural_Area;
         acc[area] = (acc[area] || 0) + 1;
         return acc;
     }, {});
+    
 
     const labelsArea = ["Urbain", "Rural", "Inconnu"];
     const valuesArea = [areaCounts[1] || 0, areaCounts[2] || 0, areaCounts[3] || 0];
@@ -127,6 +138,9 @@ const ChartComponent = ({ data }) => {
             <p className="text-section">
                 L’étude <strong>"1,6 million d’accidents de la circulation au Royaume-Uni"</strong> rassemble des données détaillées sur les accidents routiers en Angleterre, Écosse et Pays de Galles entre 2000 et 2016. Elle analyse les tendances temporelles, les conditions météorologiques, les types de routes impliquées et les caractéristiques des conducteurs et des victimes. Cette base de données permet d’identifier les zones à haut risque, d’examiner l’impact des conditions extérieures sur la sécurité routière et d’optimiser les stratégies de prévention. Elle constitue une ressource précieuse pour les chercheurs et les autorités cherchant à améliorer la sécurité sur les routes britanniques.
             </p>
+            <Link to="/prediction">
+            <button className="btn-prediction">Tester une Prédiction</button>
+            </Link>
 
             <div className="chart-container">
                 <h2>Répartition des accidents par gravité</h2>
